@@ -4,6 +4,8 @@ let isValid = require("./auth_users.js").isValid;
 let users = require("./auth_users.js").users;
 const public_users = express.Router();
 
+const axios = require('axios').default;
+
 
 public_users.post("/register", (req,res) => {
     const username = req.body.username;
@@ -24,11 +26,22 @@ public_users.post("/register", (req,res) => {
 
 });
 
+/*
 // Get the book list available in the shop
 public_users.get('/', (req, res) => {
 
     res.status(200).send(JSON.stringify(books, null, 4));
 });
+*/
+
+public_users.get('/', (req, res) => {
+    axios.get("https://ogurasho16-5000.theianext-0-labs-prod-misc-tools-us-east-0.proxy.cognitiveclass.ai/").then(resp => {
+        res.send(resp);
+    }).catch(function(err) {
+        res.send(err);
+    })
+
+})
 
 // Get book details based on ISBN
 public_users.get('/isbn/:isbn',function (req, res) {
@@ -116,5 +129,7 @@ public_users.get('/review/:isbn',function (req, res) {
 
     }
 });
+
+
 
 module.exports.general = public_users;
